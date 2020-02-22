@@ -512,10 +512,11 @@ publishing FILENAME."
 		  ;; Check :extension.  Handle special `any'
 		  ;; extension.
 		  ((let ((extension (org-publish-property :base-extension p)))
-		     (not (or (eq extension 'any)
-			      (string= (or extension "org")
-				       (file-name-extension filename)))))
-		   nil)
+                     (or (eq extension 'any)
+			 ;; treat extension as regex
+                         (string-match-p (or extension "org")
+                                         (file-name-extension filename))))
+                   p)
 		  ;; Check if FILENAME belong to project's base
 		  ;; directory, or some of its sub-directories
 		  ;; if :recursive in non-nil.
